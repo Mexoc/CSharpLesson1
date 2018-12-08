@@ -23,9 +23,11 @@ namespace BrandNewShip
         public static BaseObject[] asteroid = new BaseObject[n];
         public static Image planet = Image.FromFile("planet.png");
         public static Image starImage = Image.FromFile("star.jpg");
-        public static Star[] stars = new Star[60];
-         
-        
+        public static Star[] stars = new Star[60];        
+
+        private static Bullet _bullet;
+        private static Asteroid[] _asteroids;
+        //_bullet = new Bullet(new Point(0, 200), new Point(5, 0), new Size(4, 1));
 
         public static int Width
         {
@@ -40,22 +42,22 @@ namespace BrandNewShip
         }
 
         public static void Init(Form form)
-        {
+        {            
             context = BufferedGraphicsManager.Current;
-            g = form.CreateGraphics();
+            g = form.CreateGraphics();            
             Width = form.ClientSize.Width;
             Height = form.ClientSize.Height;
+            if (Width > 984 || Height > 962 || Width < 132 || Height < 38) throw new ArgumentOutOfRangeException("Размер превышен");           
             Timer timer1 = new Timer { Interval = 100 };            
             timer1.Start();
             timer1.Tick += Timer_Tick;
-        }                
-
+        }        
+               
         //рисуем форму и закрашиваем её черным
         public static void DrawForm()
         {
             buffer = context.Allocate(g, new Rectangle(0, 0, Width, Height));
             buffer.Graphics.Clear(Color.Black);
-            buffer.Render();            
         }
 
         //загружаем координаты астероидов и сами астероиды 
@@ -64,7 +66,7 @@ namespace BrandNewShip
             for (int i = 0; i < asteroid.Length; i++)
             {
                 asteroidpoint[i] = new Point(rnd.Next(700), rnd.Next(700));
-                asteroid[i] = new BaseObject(asteroidpoint[i], new Point(1, 0), new Size(10,10));
+                asteroid[i] = new BaseObject(asteroidpoint[i], new Point(1, 0), new Size(10, 10));
             }
         }
 
@@ -80,7 +82,6 @@ namespace BrandNewShip
         public static void DrawPlanet()
         {
             buffer.Graphics.DrawImage(planet, Width / 2, Height / 2);
-            buffer.Render();
         }
 
         public static void LoadStar()
@@ -94,8 +95,7 @@ namespace BrandNewShip
 
         public static void DrawStar()
         {
-            foreach (Star obj in stars) obj.Draw();
-            buffer.Render();
+            foreach (Star obj in stars) obj.Draw();           
         }
 
         public static void LoadStarImagePoints()
@@ -148,7 +148,8 @@ namespace BrandNewShip
             DrawStarImage();
             Update();
             StarImageUpdate();
-            StarUpdate();           
+            StarUpdate();
+            buffer.Render();
             buffer.Dispose();
         }        
     }

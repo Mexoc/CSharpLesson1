@@ -10,24 +10,24 @@ namespace BrandNewShip
 {
     public class BaseObject
     {
-        public Point Pos; //координаты начальные
-        public Point Dir;   // направление движения       
-        public Size Size; //размер объекта
+        protected Point Pos; //координаты начальные
+        protected Point Dir;   // направление движения       
+        protected Size Size; //размер объекта
 
         public BaseObject(Point pos, Point dir, Size size)
         {
             Pos = pos;
             Dir = dir;
             Size = size;
-        }       
+        }
 
-        virtual public void Draw()
+        public void Draw()
         {
             Game.buffer.Graphics.DrawRectangle(Pens.Black, Pos.X, Pos.Y, Size.Width, Size.Height);
             Game.buffer.Graphics.DrawEllipse(Pens.White, Pos.X, Pos.Y, Size.Width, Size.Height);
         }
 
-        virtual public void Update()
+    virtual public void Update()
         {
             Pos.X = Pos.X - Dir.X;
             Pos.Y = Pos.Y - Dir.Y;

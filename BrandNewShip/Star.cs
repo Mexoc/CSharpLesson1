@@ -14,7 +14,7 @@ namespace BrandNewShip
         {            
         }
 
-        public override void Draw()
+        public void Draw()
         {
             Game.buffer.Graphics.DrawLine(Pens.White, Pos.X - Size.Width, Pos.Y + Size.Height, Pos.X + Size.Width, Pos.Y - Size.Height);
             Game.buffer.Graphics.DrawLine(Pens.White, Pos.X + Size.Width, Pos.Y + Size.Height, Pos.X - Size.Width, Pos.Y - Size.Height);
