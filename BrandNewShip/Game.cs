@@ -16,11 +16,9 @@ namespace BrandNewShip
         private static int width;
         private static int height;
         private static Random rnd = new Random();
-        private static int n = 20;
         private static BaseObject[] _objs;
         private static Bullet _bullet;
         private static Asteroid[] _asteroids;
-        public static Image planet = Image.FromFile("planet.png");  
         
         public static int Width
         {
@@ -72,12 +70,6 @@ namespace BrandNewShip
             }
         }
         
-        //рисуем планету
-        public static void DrawPlanet()
-        {
-            buffer.Graphics.DrawImage(planet, Width / 2, Height / 2);
-        }           
-
         //Рисуем астероиды, пули и звезды
         public static void Draw()
         {
@@ -124,7 +116,6 @@ namespace BrandNewShip
         {
             
             DrawForm();
-            DrawPlanet();
             Draw();
             AsteroidUpdate();
             BulletUpdate();
