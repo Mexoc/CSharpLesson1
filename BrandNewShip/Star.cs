@@ -14,7 +14,7 @@ namespace BrandNewShip
         {            
         }
 
-        public void Draw()
+        public override void Draw()
         {
             Game.buffer.Graphics.DrawLine(Pens.White, Pos.X - Size.Width, Pos.Y + Size.Height, Pos.X + Size.Width, Pos.Y - Size.Height);
             Game.buffer.Graphics.DrawLine(Pens.White, Pos.X + Size.Width, Pos.Y + Size.Height, Pos.X - Size.Width, Pos.Y - Size.Height);
@@ -22,7 +22,7 @@ namespace BrandNewShip
 
         public override void Update()
         {           
-            Pos.X = Pos.X - Dir.X;
+            Pos.X = Pos.X + Dir.X;
             if (Pos.X < 0) Pos.X = Game.Width;
             if (Pos.X > Game.Width) Dir.X = -Dir.X;
         }

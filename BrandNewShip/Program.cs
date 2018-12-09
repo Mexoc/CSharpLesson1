@@ -13,12 +13,10 @@ namespace BrandNewShip
         static void Main()
         {
             Form form = new Form();
-            form.Width = 700;
-            form.Height = 700;                  
-            Game.Init(form);
-            Game.LoadAsteroid();
-            Game.LoadStar();
-            Game.LoadStarImagePoints();                       
+            form.Width = 1000;
+            form.Height = 1000;                         
+            Game.Load();
+            Game.Init(form);          
             Application.Run(form);                   
         }
     }

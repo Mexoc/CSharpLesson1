@@ -12,10 +12,12 @@ namespace BrandNewShip
         public Bullet(Point pos, Point dir, Size size) : base(pos, dir, size)
         {
         }
-        //public void Draw()
-        //{
-        //    Game.buffer.Graphics.DrawRectangle(Pens.OrangeRed, Pos.X, Pos.Y, Size.Width, Size.Height);
-        //}
+
+        public override void Draw()
+        {
+            Game.buffer.Graphics.DrawRectangle(Pens.OrangeRed, Pos.X, Pos.Y, Size.Width, Size.Height);
+        }
+
         public override void Update()
         {
             Pos.X = Pos.X + 3;

@@ -16,19 +16,12 @@ namespace BrandNewShip
         private static int width;
         private static int height;
         private static Random rnd = new Random();
-        private static int n = 20;        
-        public static Point[] asteroidpoint = new Point[n];
-        public static Point[] starpoint = new Point[60];
-        public static Point[] starpointimage = new Point[60];
-        public static BaseObject[] asteroid = new BaseObject[n];
-        public static Image planet = Image.FromFile("planet.png");
-        public static Image starImage = Image.FromFile("star.jpg");
-        public static Star[] stars = new Star[60];        
-
+        private static int n = 20;
+        private static BaseObject[] _objs;
         private static Bullet _bullet;
         private static Asteroid[] _asteroids;
-        //_bullet = new Bullet(new Point(0, 200), new Point(5, 0), new Size(4, 1));
-
+        public static Image planet = Image.FromFile("planet.png");  
+        
         public static int Width
         {
             get { return width; }
@@ -60,81 +53,59 @@ namespace BrandNewShip
             buffer.Graphics.Clear(Color.Black);
         }
 
-        //загружаем координаты астероидов и сами астероиды 
-        public static void LoadAsteroid()
+        //загружаем астероиды, звезды и пулю
+        public static void Load()
         {
-            for (int i = 0; i < asteroid.Length; i++)
+            _objs = new BaseObject[30];
+            _bullet = new Bullet(new Point(0, 200), new Point(5, 0), new Size(4, 1));            
+            _asteroids = new Asteroid[40];
+            for (var i = 0; i < _objs.Length; i++)
             {
-                asteroidpoint[i] = new Point(rnd.Next(700), rnd.Next(700));
-                asteroid[i] = new BaseObject(asteroidpoint[i], new Point(1, 0), new Size(10, 10));
+                int r = rnd.Next(5, 50);
+                _objs[i] = new Star(new Point(70,70), new Point(-r, r), new Size(3, 3));                
+                _objs[i] = new Star(new Point(rnd.Next(Game.Width, 1000), rnd.Next(Game.Height, 1000)), new Point(-r, r), new Size(3, 3));                
+            }
+            for (var i = 0; i < _asteroids.Length; i++)
+            {
+                int r = rnd.Next(5, 50);
+                _asteroids[i] = new Asteroid(new Point(rnd.Next(Game.Width, 1000), rnd.Next(Game.Height, 1000)), new Point(-r / 5, r), new Size(r, r));                
             }
         }
-
-        //рисуем астероиды на форме
-        public static void DrawAsteroid()
-        {
-            foreach (BaseObject obj in asteroid)
-                obj.Draw();
-            buffer.Render();
-        }
-
+        
         //рисуем планету
         public static void DrawPlanet()
         {
             buffer.Graphics.DrawImage(planet, Width / 2, Height / 2);
-        }
+        }           
 
-        public static void LoadStar()
+        //Рисуем астероиды, пули и звезды
+        public static void Draw()
         {
-            for (int i = 0; i < stars.Length; i++)
-            {
-                starpoint[i] = new Point(rnd.Next(700), rnd.Next(700));
-                stars[i] = new Star(starpoint[i], new Point(i, 0), new Size(2, 2));
-            }
+            _bullet.Draw();
+            foreach (Asteroid obj in _asteroids)
+                obj.Draw();
+            foreach (Star obj in _objs)
+                obj.Draw();
         }
 
-        public static void DrawStar()
+        //рисуем астероиды на форме
+        public static void AsteroidUpdate()
         {
-            foreach (Star obj in stars) obj.Draw();           
-        }
+            foreach (BaseObject obj in _asteroids)
+                obj.Update();
+        }        
 
-        public static void LoadStarImagePoints()
+        //метод движения пули
+        public static void BulletUpdate()
         {
-            for (int i = 0; i < n; i++)
-            {
-                starpointimage[i] = new Point(rnd.Next(700), rnd.Next(700));
-            }
+            _bullet.Update();
         }
 
-        public static void DrawStarImage()
-        {
-            for (int i = 0; i < n; i++)
-            {
-                buffer.Graphics.DrawImage(starImage, starpointimage[i].X, starpointimage[i].Y);
-            }
-            buffer.Render();
-        }
-
+        //метод движения звезд
         public static void StarUpdate()
         {
-            foreach (Star obj in stars) obj.Update();
-        }        
-        
-        public static void StarImageUpdate()
-        {
-            for (int i = 0; i < n; i++)
-            {
-                starpointimage[i].X = starpointimage[i].X - 2;
-                if (starpointimage[i].X == 0) starpointimage[i].X = width;
-            }            
-        }
-
-        public static void Update()
-        {
-            foreach (BaseObject obj in asteroid)
-            {
+            foreach (Star obj in _objs)
                 obj.Update();
-            }
         }
 
         //таймер изменения состояний
@@ -143,12 +114,10 @@ namespace BrandNewShip
             
             DrawForm();
             DrawPlanet();
-            DrawAsteroid();
-            DrawStar();
-            DrawStarImage();
-            Update();
-            StarImageUpdate();
-            StarUpdate();
+            Draw();
+            AsteroidUpdate();
+            BulletUpdate();
+            StarUpdate();    
             buffer.Render();
             buffer.Dispose();
         }        
