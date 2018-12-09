@@ -10,9 +10,9 @@ namespace BrandNewShip
 {
     abstract class BaseObject
     {
-        protected Point Pos; //координаты начальные
-        protected Point Dir;   // направление движения       
-        protected Size Size; //размер объекта
+        public Point Pos; //координаты начальные
+        public Point Dir;   // направление движения       
+        public Size Size; //размер объекта
 
         protected BaseObject(Point pos, Point dir, Size size)
         {
@@ -21,13 +21,12 @@ namespace BrandNewShip
             Size = size;
         }
 
-        public abstract void Draw();
-        
+        public abstract void Draw();        
 
         virtual public void Update()
         {
             Pos.X = Pos.X + Dir.X;
             if (Pos.X < 0) Pos.X = Game.Width + Size.Width;            
-        }
+        }        
     }
 }

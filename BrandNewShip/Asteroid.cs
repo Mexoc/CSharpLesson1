@@ -18,6 +18,12 @@ namespace BrandNewShip
         public override void Draw()
         {
             Game.buffer.Graphics.FillEllipse(Brushes.White, Pos.X, Pos.Y, Size.Width, Size.Height);
-        } 
+        }
+
+        public override void Update()
+        {
+            Pos.X = Pos.X + Dir.X;
+            if (Pos.X < -Size.Width) Pos.X = Game.Width + Size.Width;
+        }
     }     
 }

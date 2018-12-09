@@ -56,9 +56,9 @@ namespace BrandNewShip
         //загружаем астероиды, звезды и пулю
         public static void Load()
         {
-            _objs = new BaseObject[30];
-            _bullet = new Bullet(new Point(0, 200), new Point(5, 0), new Size(4, 1));            
-            _asteroids = new Asteroid[40];
+            _objs = new BaseObject[200];
+            _bullet = new Bullet(new Point(0, 200), new Point(10, 0), new Size(4, 1));            
+            _asteroids = new Asteroid[200];
             for (var i = 0; i < _objs.Length; i++)
             {
                 int r = rnd.Next(5, 50);
@@ -68,7 +68,7 @@ namespace BrandNewShip
             for (var i = 0; i < _asteroids.Length; i++)
             {
                 int r = rnd.Next(5, 50);
-                _asteroids[i] = new Asteroid(new Point(rnd.Next(Game.Width, 1000), rnd.Next(Game.Height, 1000)), new Point(-r / 5, r), new Size(r, r));                
+                _asteroids[i] = new Asteroid(new Point(rnd.Next(Game.Width, 1000), rnd.Next(Game.Height, 1000)), new Point(-r / 5, r), new Size(r, r)); 
             }
         }
         
@@ -108,6 +108,17 @@ namespace BrandNewShip
                 obj.Update();
         }
 
+        //Проверка столкновения пули и астероида, а также генерация нового астероида в случае столкновения
+        static public void BulletCollision()
+        {
+            foreach (Asteroid a in _asteroids)
+            {
+                Rectangle rect = new Rectangle(a.Pos.X, a.Pos.Y, a.Size.Height,a.Size.Width);
+                Rectangle bul = new Rectangle(_bullet.Pos.X, _bullet.Pos.Y, 4,1);
+                if (rect.IntersectsWith(bul)) a.Pos = a.Pos = new Point(rnd.Next(1000), rnd.Next(1000)); 
+            }
+        }
+
         //таймер изменения состояний
         public static void Timer_Tick(object sender, EventArgs e)
         {
@@ -117,6 +128,7 @@ namespace BrandNewShip
             Draw();
             AsteroidUpdate();
             BulletUpdate();
+            BulletCollision();
             StarUpdate();    
             buffer.Render();
             buffer.Dispose();

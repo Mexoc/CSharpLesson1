@@ -9,6 +9,7 @@ namespace BrandNewShip
 {
     class Bullet: BaseObject
     {
+        Random rnd = new Random();
         public Bullet(Point pos, Point dir, Size size) : base(pos, dir, size)
         {
         }
@@ -20,7 +21,8 @@ namespace BrandNewShip
 
         public override void Update()
         {
-            Pos.X = Pos.X + 3;
+            Pos.X = Pos.X + Dir.X;
+            if (Pos.X == 1000) Pos = new Point(0, rnd.Next(Game.Height));      
         }
     }
 }
